@@ -13,7 +13,7 @@ unsigned char quarter3[SIZE][SIZE];
 unsigned char quarter4[SIZE][SIZE];
 unsigned char shuffledImage[SIZE][SIZE];
 
-int choice5, choice8, quarterOrder, oldRows, oldCols, newRows, newCols, x, y;
+int choice5, choice8, quarterOrder,oldRows, oldCols, newRows, newCols, x, y;
 
 string choice;
 string choice4;
@@ -22,14 +22,17 @@ string choice_a;
 void loadGrayImage();
 void saveGrayImage();
 void BlackWhiteFilter();
-void invertImage():
+void invertImage();
 void FlipImage();
+void rotateImage();
 void DetectImageEdges();
+void enlargeImage();
 void MirrorHalfImage();
+void shuffleImage();
 
 int main(){
     cout << "hello our dear user " << endl;
-    loadGrayImage(); // take the name of the image from the user and load it to do the filters in
+    loadGrayImage(); // take the name of the image from the user and load it to apply the filters in
     cout << "please select a filter to apply or 0 to exit:  " << endl;
     cout << "1- Black and white Filter." << endl;
     cout << "2- Invert Filter." << endl;
@@ -49,22 +52,47 @@ int main(){
     if (choice == "1") {
         BlackWhiteFilter();
     }
-    if (choice == "4") {
+    else if (choice == "2"){
+        invertImage();
+    }
+    else if (choice == "3"){
+        cout << "hello";
+    }
+    else if (choice == "4") {
         FlipImage();
     }
-    if (choice == "7") {
+    else if (choice == "5"){
+        rotateImage();
+    }
+    else if (choice == "6"){
+        cout << "hello";
+    }
+    else if (choice == "7") {
         DetectImageEdges();
     }
-    if (choice == "a") {
+    else if (choice == "8"){
+        enlargeImage();
+    }
+    else if (choice == "9"){
+        cout << "hello";
+    }
+    else if (choice == "a") {
         MirrorHalfImage();
     }
-    if (choice == "0") {
+    else if (choice == "b"){
+        shuffleImage();
+    }
+    else if (choice == "c"){
+        cout << "hello";
+    }
+    else if (choice == "0") {
         cout << " thank you for using out filter"; // exit
     }
     saveGrayImage(); // this function to save the changes on the image after apply the filter on it (gray version)
 }
-//_______________
-void loadGrayImage() {
+//-----------------------------------------------
+void loadGrayImage()
+{
     char image_file_name[100];
 
     // Get gray scale image file name
@@ -75,7 +103,7 @@ void loadGrayImage() {
     strcat(image_file_name, ".bmp");
     readGSBMP(image_file_name, image);
 }
-//_______________
+//-----------------------------------------------
 void saveGrayImage() {
     char image_file_name[100];
 
@@ -87,8 +115,7 @@ void saveGrayImage() {
     strcat(image_file_name, ".bmp");
     writeGSBMP(image_file_name, image);
 }
-
-//_______________
+//-----------------------------------------------
 void BlackWhiteFilter() {
     for (int i = 0; i < SIZE; i++) {
         for (int j = 0; j < SIZE; j++) {
@@ -96,27 +123,30 @@ void BlackWhiteFilter() {
             // with 127 so if it is greater will be white otherwise will be black
             if (image[i][j] > 127) {
                 image[i][j] = 255;
-            } else {
+            }
+            else {
                 image[i][j] = 0;
             }
         }
     }
 }
-//_______________
+//-----------------------------------------------
 void invertImage() {
     for (int i = 0; i < SIZE; i++) {
         for (int j = 0; j < SIZE; j++) {
             if (image[i][j] == 0) {
                 image[i][j] = 255;
-            } else if (image [i][j] == 255) {
+            }
+            else if (image [i][j] == 255) {
                 image[i][j] = 0;
-            } else {
+            }
+            else {
                 image[i][j] = 255 - image[i][j];
             }
         }
     }
 }
-//_______________
+//-----------------------------------------------
 void FlipImage() {
     cout << " please select a number to determine how to flip " << endl;
     cout << "1- Flip Horizontally. " << endl;
@@ -159,7 +189,8 @@ void rotateImage() {
                 image[SIZE - 1 - j][i] = temp;
             }
         }
-    } else if (choice5 == 2) {
+    }
+    else if (choice5 == 2) {
         for (int i = 0; i < SIZE; i++)
             for (int j = 0, k = SIZE - 1; j < k; j++, k--)
                 swap(image[j][i], image[k][i]);
@@ -175,7 +206,8 @@ void rotateImage() {
         for (int i = 0; i < SIZE; i++)
             for (int j = i; j < SIZE; j++)
                 swap(image[i][j], image[j][i]);
-    } else {
+    }
+    else {
         for (int i = 0; i < SIZE / 2; i++) {
             for (int j = i; j < SIZE - i - 1; j++) {
                 int temp = image[i][j];
@@ -244,7 +276,8 @@ void enlargeImage() {
         strcat(newImage, ".bmp");
         writeGSBMP(newImage, quarter1);
 
-    } else if (choice8 == 2) {
+    }
+    else if (choice8 == 2) {
         for (int i = 0, x = 0; i < SIZE; i += 2, x++) {
             for (int j = 0, y = 128; j < SIZE; j += 2, y++) {
                 quarter2[i][j] = image[x][y];
@@ -259,7 +292,8 @@ void enlargeImage() {
         strcat(newImage, ".bmp");
         writeGSBMP(newImage, quarter2);
 
-    } else if (choice8 == 3) {
+    }
+    else if (choice8 == 3) {
         for (int i = 0, x = 128; i < SIZE; i += 2, x++) {
             for (int j = 0, y = 0; j < SIZE; j += 2, y++) {
                 quarter3[i][j] = image[x][y];
@@ -274,7 +308,8 @@ void enlargeImage() {
         strcat(newImage, ".bmp");
         writeGSBMP(newImage, quarter3);
 
-    } else {
+    }
+    else {
         for (int i = 0, x = 128; i < SIZE; i += 2, x++) {
             for (int j = 0, y = 128; j < SIZE; j += 2, y++) {
                 quarter4[i][j] = image[x][y];
@@ -307,7 +342,7 @@ void MirrorHalfImage() {
             }
         }
     }
-    if (choice_a == "2") {
+    else if (choice_a == "2") {
         for (int i = 0; i < SIZE; i++) {
             for (int j = 0; j < (SIZE / 2); j++) {
                 // we loop on the half of the columns to reflect the right or the left of the image
@@ -317,7 +352,7 @@ void MirrorHalfImage() {
             }
         }
     }
-    if (choice_a == "3") {
+    else if (choice_a == "3") {
         for (int i = 0; i < (SIZE / 2); i++) {
             for (int j = 0; j < SIZE; j++) {
                 // we loop on the half of the rows to reflect
@@ -328,7 +363,7 @@ void MirrorHalfImage() {
             }
         }
     }
-    if (choice_a == "4") {
+    else if (choice_a == "4") {
         for (int i = 0; i < (SIZE / 2); i++) {
             for (int j = 0; j < SIZE; j++) {
                 // we loop on the half of the rows to reflect
@@ -342,30 +377,31 @@ void MirrorHalfImage() {
 //-----------------------------------------------
 void shuffleImage() {
     for (int k = 1; k < 5; k++) {
-        cout << "Please, enter the " << k << " quarter order: " << endl;
+        cout << "Please, enter the quarter order number: " << k << endl;
         cin >> quarterOrder;
 
         if (quarterOrder == 1 || quarterOrder == 2) {
             oldRows = 0;
-        } else {
+        }
+        else {
             oldRows = 128;
         }
-
         if (quarterOrder == 1 || quarterOrder == 3) {
             oldCols = 0;
-        } else {
+        }
+        else {
             oldCols = 128;
         }
-
         if (k == 1 || k == 2) {
             newRows = 0;
-        } else {
+        }
+        else {
             newRows = 128;
         }
-
         if (k == 1 || k == 3) {
             newCols = 0;
-        } else {
+        }
+        else {
             newCols = 128;
         }
 
@@ -377,7 +413,8 @@ void shuffleImage() {
                     shuffledImage[x][y] = image[i][j];
                 }
             }
-        } else if (quarterOrder == 2) {
+        }
+        else if (quarterOrder == 2) {
             x = newRows;
             for (int i = 0; i < 128; i++, x++) {
                 y = newCols;
@@ -385,7 +422,8 @@ void shuffleImage() {
                     shuffledImage[x][y] = image[i][j];
                 }
             }
-        } else if (quarterOrder == 3) {
+        }
+        else if (quarterOrder == 3) {
             x = newRows;
             for (int i = 128; i < 256; i++, x++) {
                 y = newCols;
@@ -393,7 +431,8 @@ void shuffleImage() {
                     shuffledImage[x][y] = image[i][j];
                 }
             }
-        } else {
+        }
+        else {
             x = newRows;
             for (int i = 128; i < 256; i++, x++) {
                 y = newCols;
