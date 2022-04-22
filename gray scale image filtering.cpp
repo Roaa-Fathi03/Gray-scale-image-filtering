@@ -38,8 +38,8 @@ int main(){
     cout << "2- Invert Filter." << endl;
     cout << "3- Merge Filter." << endl;
     cout << "4- Flip Image ." << endl;
-    cout << "5- Darken and Lighten Filter." << endl;
-    cout << "6- Rotate Image." << endl;
+    cout << "5- Rotate Image." << endl;
+    cout << "6- Darken and Lighten Filter ." << endl;
     cout << "7- Detect Image Edges." << endl;
     cout << "8- Enlarge Image ." << endl;
     cout << "9- Shrink Image ." << endl;
@@ -51,49 +51,58 @@ int main(){
     cin >> choice; // take the no. of the filter that user want to apply
     if (choice == "1") {
         BlackWhiteFilter();
+        saveGrayImage();
     }
     else if (choice == "2"){
         invertImage();
+        saveGrayImage();
     }
     else if (choice == "3"){
         cout << "hello";
+        saveGrayImage();
     }
     else if (choice == "4") {
         FlipImage();
+        saveGrayImage();
     }
     else if (choice == "5"){
         rotateImage();
+        saveGrayImage();
     }
     else if (choice == "6"){
         cout << "hello";
+        saveGrayImage();
     }
     else if (choice == "7") {
         DetectImageEdges();
+        saveGrayImage();
     }
     else if (choice == "8"){
         enlargeImage();
     }
     else if (choice == "9"){
         cout << "hello";
+        saveGrayImage();
     }
     else if (choice == "a") {
         MirrorHalfImage();
+        saveGrayImage();
     }
     else if (choice == "b"){
         shuffleImage();
     }
     else if (choice == "c"){
         cout << "hello";
+        saveGrayImage();
     }
     else if (choice == "0") {
         cout << " thank you for using out filter"; // exit
     }
-    saveGrayImage(); // this function to save the changes on the image after apply the filter on it (gray version)
+    //saveGrayImage(); // this function to save the changes on the image after apply the filter on it (gray version)
 }
 //-----------------------------------------------
-void loadGrayImage()
-{
-    char image_file_name[100];
+void loadGrayImage(){
+ char image_file_name[100];
 
     // Get gray scale image file name
     cout << "Please enter the source file name: ";
@@ -275,7 +284,6 @@ void enlargeImage() {
         cin >> newImage;
         strcat(newImage, ".bmp");
         writeGSBMP(newImage, quarter1);
-
     }
     else if (choice8 == 2) {
         for (int i = 0, x = 0; i < SIZE; i += 2, x++) {
@@ -377,31 +385,30 @@ void MirrorHalfImage() {
 //-----------------------------------------------
 void shuffleImage() {
     for (int k = 1; k < 5; k++) {
-        cout << "Please, enter the quarter order number: " << k << endl;
+        cout << "Please, enter the " << k << " quarter order: " << endl;
         cin >> quarterOrder;
 
         if (quarterOrder == 1 || quarterOrder == 2) {
             oldRows = 0;
-        }
-        else {
+        } else {
             oldRows = 128;
         }
+
         if (quarterOrder == 1 || quarterOrder == 3) {
             oldCols = 0;
-        }
-        else {
+        } else {
             oldCols = 128;
         }
+
         if (k == 1 || k == 2) {
             newRows = 0;
-        }
-        else {
+        } else {
             newRows = 128;
         }
+
         if (k == 1 || k == 3) {
             newCols = 0;
-        }
-        else {
+        } else {
             newCols = 128;
         }
 
@@ -413,8 +420,7 @@ void shuffleImage() {
                     shuffledImage[x][y] = image[i][j];
                 }
             }
-        }
-        else if (quarterOrder == 2) {
+        } else if (quarterOrder == 2) {
             x = newRows;
             for (int i = 0; i < 128; i++, x++) {
                 y = newCols;
@@ -422,8 +428,7 @@ void shuffleImage() {
                     shuffledImage[x][y] = image[i][j];
                 }
             }
-        }
-        else if (quarterOrder == 3) {
+        } else if (quarterOrder == 3) {
             x = newRows;
             for (int i = 128; i < 256; i++, x++) {
                 y = newCols;
@@ -431,8 +436,7 @@ void shuffleImage() {
                     shuffledImage[x][y] = image[i][j];
                 }
             }
-        }
-        else {
+        } else {
             x = newRows;
             for (int i = 128; i < 256; i++, x++) {
                 y = newCols;
@@ -442,5 +446,15 @@ void shuffleImage() {
             }
         }
     }
+    char newImage[100];
+
+    // Get gray scale target image file name.
+    cout << "Please, enter the target image file name: " << endl;
+    cin >> newImage;
+
+    // Add to the file name .bmp extension to load the image.
+    strcat(newImage, ".bmp");
+    writeGSBMP(newImage, shuffledImage);
 }
 //-----------------------------------------------
+
