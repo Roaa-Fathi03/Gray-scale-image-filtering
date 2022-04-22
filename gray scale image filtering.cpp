@@ -3,17 +3,30 @@
 #include "bmplib.cpp"
 #include "bmplib.h"
 #include <string>
+
 using namespace std;
+
 unsigned char image[SIZE][SIZE];
+unsigned char quarter1[SIZE][SIZE];
+unsigned char quarter2[SIZE][SIZE];
+unsigned char quarter3[SIZE][SIZE];
+unsigned char quarter4[SIZE][SIZE];
+unsigned char shuffledImage[SIZE][SIZE];
+
+int choice5, choice8, quarterOrder, oldRows, oldCols, newRows, newCols, x, y;
+
 string choice;
 string choice4;
 string choice_a;
+
 void loadGrayImage();
 void saveGrayImage();
 void BlackWhiteFilter();
+void invertImage():
 void FlipImage();
 void DetectImageEdges();
 void MirrorHalfImage();
+
 int main(){
     cout << "hello our dear user " << endl;
     loadGrayImage(); // take the name of the image from the user and load it to do the filters in
@@ -90,6 +103,20 @@ void BlackWhiteFilter() {
     }
 }
 //_______________
+void invertImage() {
+    for (int i = 0; i < SIZE; i++) {
+        for (int j = 0; j < SIZE; j++) {
+            if (image[i][j] == 0) {
+                image[i][j] = 255;
+            } else if (image [i][j] == 255) {
+                image[i][j] = 0;
+            } else {
+                image[i][j] = 255 - image[i][j];
+            }
+        }
+    }
+}
+//_______________
 void FlipImage() {
     cout << " please select a number to determine how to flip " << endl;
     cout << "1- Flip Horizontally. " << endl;
@@ -115,6 +142,68 @@ void FlipImage() {
     }
 }
 //-----------------------------------------------
+void rotateImage() {
+    cout << "Please, enter a number to select the clockwise degrees of rotation: " << endl;
+    cout << "1 - 90 degrees." << endl;
+    cout << "2 - 180 degrees." << endl;
+    cout << "3 - 270 degrees." << endl;
+    cin >> choice5;
+
+    if (choice5 == 1) {
+        for (int i = 0; i < SIZE / 2; i++) {
+            for (int j = i; j < SIZE - i - 1; j++) {
+                int temp = image[i][j];
+                image[i][j] = image[j][SIZE - 1 - i];
+                image[j][SIZE - 1 - i] = image[SIZE - 1 - i][SIZE - 1 - j];
+                image[SIZE - 1 - i][SIZE - 1 - j] = image[SIZE - 1 - j][i];
+                image[SIZE - 1 - j][i] = temp;
+            }
+        }
+    } else if (choice5 == 2) {
+        for (int i = 0; i < SIZE; i++)
+            for (int j = 0, k = SIZE - 1; j < k; j++, k--)
+                swap(image[j][i], image[k][i]);
+
+        for (int i = 0; i < SIZE; i++)
+            for (int j = i; j < SIZE; j++)
+                swap(image[i][j], image[j][i]);
+
+        for (int i = 0; i < SIZE; i++)
+            for (int j = 0, k = SIZE - 1; j < k; j++, k--)
+                swap(image[j][i], image[k][i]);
+
+        for (int i = 0; i < SIZE; i++)
+            for (int j = i; j < SIZE; j++)
+                swap(image[i][j], image[j][i]);
+    } else {
+        for (int i = 0; i < SIZE / 2; i++) {
+            for (int j = i; j < SIZE - i - 1; j++) {
+                int temp = image[i][j];
+                image[i][j] = image[j][SIZE - 1 - i];
+                image[j][SIZE - 1 - i] = image[SIZE - 1 - i][SIZE - 1 - j];
+                image[SIZE - 1 - i][SIZE - 1 - j] = image[SIZE - 1 - j][i];
+                image[SIZE - 1 - j][i] = temp;
+            }
+        }
+
+        for (int i = 0; i < SIZE; i++)
+            for (int j = 0, k = SIZE - 1; j < k; j++, k--)
+                swap(image[j][i], image[k][i]);
+
+        for (int i = 0; i < SIZE; i++)
+            for (int j = i; j < SIZE; j++)
+                swap(image[i][j], image[j][i]);
+
+        for (int i = 0; i < SIZE; i++)
+            for (int j = 0, k = SIZE - 1; j < k; j++, k--)
+                swap(image[j][i], image[k][i]);
+
+        for (int i = 0; i < SIZE; i++)
+            for (int j = i; j < SIZE; j++)
+                swap(image[i][j], image[j][i]);
+    }
+}
+//-----------------------------------------------
 void DetectImageEdges() {
     BlackWhiteFilter(); // we call the black and white function
     // because we compare each index and the next to it with 0 and 255
@@ -129,6 +218,76 @@ void DetectImageEdges() {
                 image[i][j] = 0;
             }
         }
+    }
+}
+//-----------------------------------------------
+void enlargeImage() {
+    cout << "Please, enter a number to determine which quarter to enlarge: " << endl;
+    cout << "1 - Right upper quarter." << endl;
+    cout << "2 - Left upper quarter." << endl;
+    cout << "3 - Right lower quarter." << endl;
+    cout << "4 - Left lower quarter." << endl;
+    cin >> choice8;
+
+    if (choice8 == 1) {
+        for (int i = 0, x = 0; i < SIZE; i += 2, x++) {
+            for (int j = 0, y = 0; j < SIZE; j += 2, y++) {
+                quarter1[i][j] = image[x][y];
+                quarter1[i][j + 1] = image[x][y];
+                quarter1[i + 1][j] = image[x][y];
+                quarter1[i + 1][j + 1] = image[x][y];
+            }
+        }
+        char newImage[100];
+        cout << "Please, enter the target image file name: " << endl;
+        cin >> newImage;
+        strcat(newImage, ".bmp");
+        writeGSBMP(newImage, quarter1);
+
+    } else if (choice8 == 2) {
+        for (int i = 0, x = 0; i < SIZE; i += 2, x++) {
+            for (int j = 0, y = 128; j < SIZE; j += 2, y++) {
+                quarter2[i][j] = image[x][y];
+                quarter2[i][j + 1] = image[x][y];
+                quarter2[i + 1][j] = image[x][y];
+                quarter2[i + 1][j + 1] = image[x][y];
+            }
+        }
+        char newImage[100];
+        cout << "Please, enter the target image file name: " << endl;
+        cin >> newImage;
+        strcat(newImage, ".bmp");
+        writeGSBMP(newImage, quarter2);
+
+    } else if (choice8 == 3) {
+        for (int i = 0, x = 128; i < SIZE; i += 2, x++) {
+            for (int j = 0, y = 0; j < SIZE; j += 2, y++) {
+                quarter3[i][j] = image[x][y];
+                quarter3[i][j + 1] = image[x][y];
+                quarter3[i + 1][j] = image[x][y];
+                quarter3[i + 1][j + 1] = image[x][y];
+            }
+        }
+        char newImage[100];
+        cout << "Please, enter the target image file name: " << endl;
+        cin >> newImage;
+        strcat(newImage, ".bmp");
+        writeGSBMP(newImage, quarter3);
+
+    } else {
+        for (int i = 0, x = 128; i < SIZE; i += 2, x++) {
+            for (int j = 0, y = 128; j < SIZE; j += 2, y++) {
+                quarter4[i][j] = image[x][y];
+                quarter4[i][j + 1] = image[x][y];
+                quarter4[i + 1][j] = image[x][y];
+                quarter4[i + 1][j + 1] = image[x][y];
+            }
+        }
+        char newImage[100];
+        cout << "Please, enter the target image file name: " << endl;
+        cin >> newImage;
+        strcat(newImage, ".bmp");
+        writeGSBMP(newImage, quarter4);
     }
 }
 //-----------------------------------------------
@@ -180,3 +339,69 @@ void MirrorHalfImage() {
         }
     }
 }
+//-----------------------------------------------
+void shuffleImage() {
+    for (int k = 1; k < 5; k++) {
+        cout << "Please, enter the " << k << " quarter order: " << endl;
+        cin >> quarterOrder;
+
+        if (quarterOrder == 1 || quarterOrder == 2) {
+            oldRows = 0;
+        } else {
+            oldRows = 128;
+        }
+
+        if (quarterOrder == 1 || quarterOrder == 3) {
+            oldCols = 0;
+        } else {
+            oldCols = 128;
+        }
+
+        if (k == 1 || k == 2) {
+            newRows = 0;
+        } else {
+            newRows = 128;
+        }
+
+        if (k == 1 || k == 3) {
+            newCols = 0;
+        } else {
+            newCols = 128;
+        }
+
+        if (quarterOrder == 1) {
+            x = newRows;
+            for (int i = 0; i < 128; i++, x++) {
+                y = newCols;
+                for (int j = 0; j < 128; j++, y++) {
+                    shuffledImage[x][y] = image[i][j];
+                }
+            }
+        } else if (quarterOrder == 2) {
+            x = newRows;
+            for (int i = 0; i < 128; i++, x++) {
+                y = newCols;
+                for (int j = 128; j < 256; j++, y++) {
+                    shuffledImage[x][y] = image[i][j];
+                }
+            }
+        } else if (quarterOrder == 3) {
+            x = newRows;
+            for (int i = 128; i < 256; i++, x++) {
+                y = newCols;
+                for (int j = 0; j < 128; j++, y++) {
+                    shuffledImage[x][y] = image[i][j];
+                }
+            }
+        } else {
+            x = newRows;
+            for (int i = 128; i < 256; i++, x++) {
+                y = newCols;
+                for (int j = 128; j < 256; j++, y++) {
+                    shuffledImage[x][y] = image[i][j];
+                }
+            }
+        }
+    }
+}
+//-----------------------------------------------
