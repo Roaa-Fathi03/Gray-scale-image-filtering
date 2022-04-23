@@ -7,6 +7,8 @@
 using namespace std;
 
 unsigned char image[SIZE][SIZE];
+unsigned char image2[SIZE][SIZE];
+unsigned char image3[SIZE][SIZE];
 unsigned char quarter1[SIZE][SIZE];
 unsigned char quarter2[SIZE][SIZE];
 unsigned char quarter3[SIZE][SIZE];
@@ -19,6 +21,7 @@ string choice;
 string choice4;
 string choice_a;
 
+//functions used in the program
 void loadGrayImage();
 void saveGrayImage();
 void BlackWhiteFilter();
@@ -29,6 +32,10 @@ void DetectImageEdges();
 void enlargeImage();
 void MirrorHalfImage();
 void shuffleImage();
+void loadImage ();
+void mergeImages();
+void lightenAndDarkenImage();
+
 
 int main(){
     cout << "hello our dear user " << endl;
@@ -58,8 +65,7 @@ int main(){
         saveGrayImage();
     }
     else if (choice == "3"){
-        cout << "hello";
-        saveGrayImage();
+        mergeImages();
     }
     else if (choice == "4") {
         FlipImage();
@@ -70,7 +76,7 @@ int main(){
         saveGrayImage();
     }
     else if (choice == "6"){
-        cout << "hello";
+        lightenAndDarkenImage();
         saveGrayImage();
     }
     else if (choice == "7") {
@@ -98,6 +104,8 @@ int main(){
     else if (choice == "0") {
         cout << " thank you for using out filter"; // exit
     }
+    else
+        cout << "Invalid character" ;
     //saveGrayImage(); // this function to save the changes on the image after apply the filter on it (gray version)
 }
 //-----------------------------------------------
@@ -463,4 +471,56 @@ void shuffleImage() {
     writeGSBMP(newImage, shuffledImage); // Writing and creating the new image.
 }
 //-----------------------------------------------
+//Filter 3: Merge Images
+void mergeImages(){
+    char imageFileName[100];
+
+    //taking the second image from the user "image2"
+    cout << "Enter the second source image file name: ";
+    cin >> imageFileName;
+
+    strcat(imageFileName, ".bmp");
+    readGSBMP(imageFileName, image2);
+
+    //taking the average of every 2 pixels from both images  into a new loaded "image3"
+    for (int i = 0; i < SIZE; ++i) {
+        for (int j = 0; j < SIZE; ++j) {
+            image3[i][j] = (image[i][j] + image2[i][j]) / 2;
+        }
+    }
+    char newImageFileName[100];
+
+    //letting the user choose a name to the new image "image3"
+    cout << "enter the target image file name: ";
+    cin >> newImageFileName;
+
+    //attaching .bmp to the name chosen by user and saving "image3"
+    strcat(newImageFileName, ".bmp");
+    writeGSBMP(newImageFileName, image3);
+}
+//-----------------------------------------------
+//Filter 6 : lighten and darken image
+void lightenAndDarkenImage(){
+    char lORd;
+    //letting the user choose between darkening or lightening the image
+    cout << "Do you want to (d)arken or (l)ighten?";
+    cin >> lORd;
+
+    //lightening the color of the image by adding 255 to each pixel then dividing it by 2
+    if(lORd == 'l'){
+        for (int i = 0; i < SIZE; ++i) {
+            for (int j = 0; j < SIZE; ++j) {
+                image[i][j] = (image[i][j] + 255) / 2;
+            }
+        }
+    }
+    //darkening the color of the image by halving the pixel color
+    else if(lORd == 'd'){
+        for (int i = 0; i < SIZE; ++i) {
+            for (int j = 0; j < SIZE; ++j) {
+                image[i][j] *= 0.5;
+            }
+        }
+    }
+}
 
