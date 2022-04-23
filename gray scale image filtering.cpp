@@ -1,9 +1,9 @@
 /* Title: gray scaled image filters
  * Purpose of the code: how to work on the image after load it into 2D array
- * how to loop on the row, and columns 
+ * how to loop on the row, and columns
  * Author 1: Farah Maged Mahmoud Soliman
  * ID 1: 20210286
- * Author 2: Shaimaa Hanafi Rashad Ali 
+ * Author 2: Shaimaa Hanafi Rashad Ali
  * ID 2: 20200887
  * Author 3: Roaa Fathi Abdelhameed Ahmed Nada.
  * ID 3: 20210140 */
@@ -46,8 +46,6 @@ void shrinkImage();
 void MirrorHalfImage();
 void shuffleImage();
 void blurImage();
-void loadImage ();
-
 
 int main(){
     cout << "hello our dear user " << endl;
@@ -68,8 +66,6 @@ int main(){
     cout << "s- Save the Image to a file." << endl;
     cout << "0- Exit ." << endl;
     cin >> choice; // take the no. of the filter that user want to apply
-    
-    //leting the user choose the filter to apply
     if (choice == "1") {
         BlackWhiteFilter();
         saveGrayImage();
@@ -163,18 +159,16 @@ void BlackWhiteFilter() {
 }
 //-----------------------------------------------
 // Filter 2: Invert Filter
-void invertImage() { 
+void invertImage() {
     // Looping through each single pixel in the original image, and replacing each white pixel to a black one, each black pixel to a white one, and each pixel with the one with the opposite level of brightness.
     for (int i = 0; i < SIZE; i++) {
         for (int j = 0; j < SIZE; j++) {
             if (image[i][j] == 0) {
                 image[i][j] = 255;
             }
-            
             else if (image [i][j] == 255) {
                 image[i][j] = 0;
             }
-            
             else {
                 image[i][j] = 255 - image[i][j];
             }
@@ -255,7 +249,7 @@ void rotateImage() {
             }
         }
     }
-    
+
     else if (choice5 == 2) { // If the choice was clockwise 180 degrees.
         for (int i = 0; i < SIZE; i++) // We rotate the original image by 90 clockwise degrees twice, so we repeat the same process twice.
             for (int j = 0, k = SIZE - 1; j < k; j++, k--) // Looping through each single pixel in half the original image, and swapping each vertical pixel to be a horizontal one, and vice versa.
@@ -273,7 +267,6 @@ void rotateImage() {
             for (int j = i; j < SIZE; j++)
                 swap(image[i][j], image[j][i]);
     }
-    
     else { // If the choice was clockwise 270 degrees.
         for (int i = 0; i < SIZE / 2; i++) { // We rotate the original image by 90 clockwise degrees thrice, so we repeat the same process thrice.
             for (int j = i; j < SIZE - i - 1; j++) { // Looping through each single pixel in half the original image, and swapping each vertical pixel to be a horizontal one, and vice versa.
@@ -284,7 +277,6 @@ void rotateImage() {
                 image[SIZE - 1 - j][i] = temp;
             }
         }
-
         for (int i = 0; i < SIZE; i++)
             for (int j = 0, k = SIZE - 1; j < k; j++, k--)
                 swap(image[j][i], image[k][i]);
@@ -371,7 +363,7 @@ void enlargeImage() {
         strcat(newImage, ".bmp"); // Adding .bmp extension to load and, write it.
         writeGSBMP(newImage, quarter1); // Writing and creating the new image.
     }
-    
+
     else if (choice8 == 2) { // If the chosen quarter is the second one.
         for (int i = 0, x = 0; i < SIZE; i += 2, x++) { // Looping through each single pixel in the original image, and adding it to the first four pixels in the new one.
             for (int j = 0, y = 128; j < SIZE; j += 2, y++) {
@@ -388,7 +380,7 @@ void enlargeImage() {
         writeGSBMP(newImage, quarter2); // Writing and creating the new image.
 
     }
-    
+
     else if (choice8 == 3) { // If the chosen quarter is the third one.
         for (int i = 0, x = 128; i < SIZE; i += 2, x++) { // Looping through each single pixel in the original image, and adding it to the first four pixels in the new one.
             for (int j = 0, y = 0; j < SIZE; j += 2, y++) {
@@ -405,7 +397,7 @@ void enlargeImage() {
         writeGSBMP(newImage, quarter3); // Writing and creating the new image.
 
     }
-    
+
     else { // If the chosen quarter is the fourth one.
         for (int i = 0, x = 128; i < SIZE; i += 2, x++) { // Looping through each single pixel in the original image, and adding it to the first four pixels in the new one.
             for (int j = 0, y = 128; j < SIZE; j += 2, y++) {
@@ -423,7 +415,7 @@ void enlargeImage() {
     }
 }
 //-----------------------------------------------
-//Filter 9 : shrink image
+//Filter 9 : shrink Filter
 void shrinkImage(){
     int shrinkSize;
 
@@ -512,25 +504,29 @@ void shuffleImage() {
 
         if (quarterOrder == 1 || quarterOrder == 2) { // If the chosen quarter is 1 or 2, then we set the old rows (original image) reference to 0.
             oldRows = 0;
-        } else { // Otherwise, it is set to 128.
+        }
+        else { // Otherwise, it is set to 128.
             oldRows = 128;
         }
 
         if (quarterOrder == 1 || quarterOrder == 3) { // If the chosen quarter is 1 or 3, then we set the old columns (original image) reference to 0.
             oldCols = 0;
-        } else { // Otherwise, it is set to 128.
+        }
+        else { // Otherwise, it is set to 128.
             oldCols = 128;
         }
 
         if (k == 1 || k == 2) { // If the chosen quarter is 1 or 2, then we set the new rows (shuffled image) reference to 0.
             newRows = 0;
-        } else { // Otherwise, it is set to 128.
+        }
+        else { // Otherwise, it is set to 128.
             newRows = 128;
         }
 
         if (k == 1 || k == 3) { // If the chosen quarter is 1 or 2, then we set the new columns (shuffled image) reference to 0.
             newCols = 0;
-        } else { // Otherwise, it is set to 128.
+        }
+        else { // Otherwise, it is set to 128.
             newCols = 128;
         }
 
@@ -542,8 +538,9 @@ void shuffleImage() {
                     shuffledImage[x][y] = image[i][j];
                 }
             }
-            
-        } else if (quarterOrder == 2) { // If the chosen quarter is 2.
+
+        }
+        else if (quarterOrder == 2) { // If the chosen quarter is 2.
             x = newRows; // We set the counter x to the value of the new rows refernce, and adding each single pixel in the original image to the shuffled one.
             for (int i = 0; i < 128; i++, x++) {
                 y = newCols; // Counter y is set the value of the new columns refernce.
@@ -551,8 +548,9 @@ void shuffleImage() {
                     shuffledImage[x][y] = image[i][j];
                 }
             }
-            
-        } else if (quarterOrder == 3) { // If the chosen quarter is 3.
+
+        }
+        else if (quarterOrder == 3) { // If the chosen quarter is 3.
             x = newRows; // We set the counter x to the value of the new rows refernce, and adding each single pixel in the original image to the shuffled one.
             for (int i = 128; i < 256; i++, x++) {
                 y = newCols; // Counter y is set the value of the new columns refernce.
@@ -560,8 +558,9 @@ void shuffleImage() {
                     shuffledImage[x][y] = image[i][j];
                 }
             }
-            
-        } else { // If the chosen quarter is 4.
+
+        }
+        else { // If the chosen quarter is 4.
             x = newRows; // We set the counter x to the value of the new rows refernce, and adding each single pixel in the original image to the shuffled one.
             for (int i = 128; i < 256; i++, x++) {
                 y = newCols; // Counter y is set the value of the new columns refernce.
