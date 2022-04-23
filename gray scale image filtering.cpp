@@ -3,7 +3,7 @@
  * how to loop on the row, and columns 
  * Author 1: Farah Maged Mahmoud Soliman
  * ID 1: 20210286
- * Author 2: Shaimaa Hanafi Rashad
+ * Author 2: Shaimaa Hanafi Rashad Ali 
  * ID 2: 20200887
  * Author 3: Roaa Fathi Abdelhameed Ahmed Nada.
  * ID 3: 20210140 */
@@ -36,17 +36,17 @@ void loadGrayImage();
 void saveGrayImage();
 void BlackWhiteFilter();
 void invertImage();
+void mergeImages();
 void FlipImage();
 void rotateImage();
+void lightenAndDarkenImage();
 void DetectImageEdges();
 void enlargeImage();
+void shrinkImage();
 void MirrorHalfImage();
 void shuffleImage();
-void loadImage ();
-void mergeImages();
-void shrinkImage();
 void blurImage();
-void lightenAndDarkenImage();
+void loadImage ();
 
 
 int main(){
@@ -146,6 +146,7 @@ void saveGrayImage() {
     writeGSBMP(image_file_name, image);
 }
 //-----------------------------------------------
+// Filter 1: Black and White Filter
 void BlackWhiteFilter() {
     for (int i = 0; i < SIZE; i++) {
         for (int j = 0; j < SIZE; j++) {
@@ -161,7 +162,9 @@ void BlackWhiteFilter() {
     }
 }
 //-----------------------------------------------
-void invertImage() { // Looping through each single pixel in the original image, and replacing each white pixel to a black one, each black pixel to a white one, and each pixel with the one with the opposite level of brightness.
+// Filter 2: Invert Filter
+void invertImage() { 
+    // Looping through each single pixel in the original image, and replacing each white pixel to a black one, each black pixel to a white one, and each pixel with the one with the opposite level of brightness.
     for (int i = 0; i < SIZE; i++) {
         for (int j = 0; j < SIZE; j++) {
             if (image[i][j] == 0) {
@@ -179,6 +182,35 @@ void invertImage() { // Looping through each single pixel in the original image,
     }
 }
 //-----------------------------------------------
+//Filter 3: Merge Images
+void mergeImages(){
+    char imageFileName[100];
+
+    //taking the second image from the user "image2"
+    cout << "Enter the second source image file name: ";
+    cin >> imageFileName;
+
+    strcat(imageFileName, ".bmp");
+    readGSBMP(imageFileName, image2);
+
+    //taking the average of every 2 pixels from both images  into a new loaded "image3"
+    for (int i = 0; i < SIZE; ++i) {
+        for (int j = 0; j < SIZE; ++j) {
+            image3[i][j] = (image[i][j] + image2[i][j]) / 2;
+        }
+    }
+    char newImageFileName[100];
+
+    //letting the user choose a name to the new image "image3"
+    cout << "enter the target image file name: ";
+    cin >> newImageFileName;
+
+    //attaching .bmp to the name chosen by user and saving "image3"
+    strcat(newImageFileName, ".bmp");
+    writeGSBMP(newImageFileName, image3);
+}
+//-----------------------------------------------
+// Filter 4: Flip Filter
 void FlipImage() {
     cout << " please select a number to determine how to flip " << endl;
     cout << "1- Flip Horizontally. " << endl;
@@ -204,6 +236,7 @@ void FlipImage() {
     }
 }
 //-----------------------------------------------
+// Filter 5: Rotate Filter
 void rotateImage() {
     cout << "Please, enter a number to select the clockwise degrees of rotation: " << endl; // Asking the user about the number of clockwise degrees.
     cout << "1 - 90 degrees." << endl;
@@ -270,6 +303,32 @@ void rotateImage() {
     }
 }
 //-----------------------------------------------
+//Filter 6 : lighten and darken image
+void lightenAndDarkenImage(){
+    char lORd;
+    //letting the user choose between darkening or lightening the image
+    cout << "Do you want to (d)arken or (l)ighten?";
+    cin >> lORd;
+
+    //lightening the color of the image by adding 255 to each pixel then dividing it by 2
+    if(lORd == 'l'){
+        for (int i = 0; i < SIZE; ++i) {
+            for (int j = 0; j < SIZE; ++j) {
+                image[i][j] = (image[i][j] + 255) / 2;
+            }
+        }
+    }
+    //darkening the color of the image by halving the pixel color
+    else if(lORd == 'd'){
+        for (int i = 0; i < SIZE; ++i) {
+            for (int j = 0; j < SIZE; ++j) {
+                image[i][j] *= 0.5;
+            }
+        }
+    }
+}
+//..................................................
+// Filter 7: Detect Image Edges Filter
 void DetectImageEdges() {
     BlackWhiteFilter(); // we call the black and white function
     // because we compare each index and the next to it with 0 and 255
@@ -287,7 +346,9 @@ void DetectImageEdges() {
     }
 }
 //-----------------------------------------------
-void enlargeImage() { // Asking the user to determine which quarter to enlarge.
+// Filter 8: Enlarge Filter
+void enlargeImage() {
+    // Asking the user to determine which quarter to enlarge.
     cout << "Please, enter a number to determine which quarter to enlarge: " << endl;
     cout << "1 - Right upper quarter." << endl;
     cout << "2 - Left upper quarter." << endl;
@@ -362,6 +423,38 @@ void enlargeImage() { // Asking the user to determine which quarter to enlarge.
     }
 }
 //-----------------------------------------------
+//Filter 9 : shrink image
+void shrinkImage(){
+    int shrinkSize;
+
+    //choosing the shrinkage size
+    cout << "please choose the shrinkage size:\n" << "1/(2)\n" << "1/(3)\n" << "1/(4)\n" << ">> ";
+    cin >> shrinkSize;
+
+    //skipping a shrink size number and loading it into a new loaded image "image2"
+    for (int i = 0, x = 0; i < SIZE; i += shrinkSize, ++x) {
+        for (int j = 0, y = 0; j < SIZE; j += shrinkSize, ++y) {
+            image2[x][y] = image[i][j];
+        }
+    }
+    //turning the rest of the pixels into white color
+    for (int i = (256 / shrinkSize), x = 0, w = (256 / shrinkSize); i < SIZE; ++i, x++, ++w) {
+        for (int j = (256 / shrinkSize), y = (256 / shrinkSize), z = 0; j < SIZE; ++j, y++, ++z) {
+            image2[i][j] = 255;
+            image2[x][y] = 255;
+            image2[w][z] = 255;
+        }
+    }
+    char  imageFileName[100];
+
+    cout << "enter the target image file name: ";
+    cin >> imageFileName;
+
+    strcat(imageFileName, ".bmp");
+    writeGSBMP(imageFileName, image2);
+}
+//..................................................
+// Filter a: Mirror Half Images Filter
 void MirrorHalfImage() {
     cout << "please select which half you want: " << endl;
     cout << "1- Right half" << endl;
@@ -411,6 +504,7 @@ void MirrorHalfImage() {
     }
 }
 //-----------------------------------------------
+// Filter b: Shuffle Filter
 void shuffleImage() {
     for (int k = 1; k < 5; k++) {
         cout << "Please, enter the " << k << " quarter order: " << endl; // Asking about the new quarters order for four times.
@@ -483,91 +577,7 @@ void shuffleImage() {
     strcat(newImage, ".bmp"); // Adding .bmp extension to load, and write it.
     writeGSBMP(newImage, shuffledImage); // Writing and creating the new image.
 }
-//-----------------------------------------------
-//Filter 3: Merge Images
-void mergeImages(){
-    char imageFileName[100];
-
-    //taking the second image from the user "image2"
-    cout << "Enter the second source image file name: ";
-    cin >> imageFileName;
-
-    strcat(imageFileName, ".bmp");
-    readGSBMP(imageFileName, image2);
-
-    //taking the average of every 2 pixels from both images  into a new loaded "image3"
-    for (int i = 0; i < SIZE; ++i) {
-        for (int j = 0; j < SIZE; ++j) {
-            image3[i][j] = (image[i][j] + image2[i][j]) / 2;
-        }
-    }
-    char newImageFileName[100];
-
-    //letting the user choose a name to the new image "image3"
-    cout << "enter the target image file name: ";
-    cin >> newImageFileName;
-
-    //attaching .bmp to the name chosen by user and saving "image3"
-    strcat(newImageFileName, ".bmp");
-    writeGSBMP(newImageFileName, image3);
-}
-//-----------------------------------------------
-//Filter 6 : lighten and darken image
-void lightenAndDarkenImage(){
-    char lORd;
-    //letting the user choose between darkening or lightening the image
-    cout << "Do you want to (d)arken or (l)ighten?";
-    cin >> lORd;
-
-    //lightening the color of the image by adding 255 to each pixel then dividing it by 2
-    if(lORd == 'l'){
-        for (int i = 0; i < SIZE; ++i) {
-            for (int j = 0; j < SIZE; ++j) {
-                image[i][j] = (image[i][j] + 255) / 2;
-            }
-        }
-    }
-    //darkening the color of the image by halving the pixel color
-    else if(lORd == 'd'){
-        for (int i = 0; i < SIZE; ++i) {
-            for (int j = 0; j < SIZE; ++j) {
-                image[i][j] *= 0.5;
-            }
-        }
-    }
-}
-//..................................................
-//Filter 9 : shrink image
-void shrinkImage(){
-    int shrinkSize;
-
-    //choosing the shrinkage size
-    cout << "please choose the shrinkage size:\n" << "1/(2)\n" << "1/(3)\n" << "1/(4)\n" << ">> ";
-    cin >> shrinkSize;
-
-    //skipping a shrink size number and loading it into a new loaded image "image2"
-    for (int i = 0, x = 0; i < SIZE; i += shrinkSize, ++x) {
-        for (int j = 0, y = 0; j < SIZE; j += shrinkSize, ++y) {
-            image2[x][y] = image[i][j];
-        }
-    }
-    //turning the rest of the pixels into white color
-    for (int i = (256 / shrinkSize), x = 0, w = (256 / shrinkSize); i < SIZE; ++i, x++, ++w) {
-        for (int j = (256 / shrinkSize), y = (256 / shrinkSize), z = 0; j < SIZE; ++j, y++, ++z) {
-            image2[i][j] = 255;
-            image2[x][y] = 255;
-            image2[w][z] = 255;
-        }
-    }
-    char  imageFileName[100];
-
-    cout << "enter the target image file name: ";
-    cin >> imageFileName;
-
-    strcat(imageFileName, ".bmp");
-    writeGSBMP(imageFileName, image2);
-}
-//..................................................
+//----------------------------------------------
 //Filter c : blue image
 void blurImage(){
     for (int i = 0; i < SIZE; ++i) {
