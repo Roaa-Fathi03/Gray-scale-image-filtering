@@ -1,3 +1,13 @@
+/* Title: gray scaled image filters
+ * Purpose of the code: how to work on the image after load it into 2D array
+ * how to loop on the row, and columns 
+ * Author 1: Farah Maged Mahmoud Soliman
+ * ID 1: 20210286
+ * Author 2: Shaimaa Hanafi Rashad
+ * ID 2: 20200887
+ * Author 3: Roaa Fathi Abdelhameed Ahmed Nada.
+ * ID 3: 20210140 */
+
 #include <iostream>
 #include <cstring>
 #include "bmplib.cpp"
