@@ -34,6 +34,8 @@ void MirrorHalfImage();
 void shuffleImage();
 void loadImage ();
 void mergeImages();
+void shrinkImage();
+void blurImage();
 void lightenAndDarkenImage();
 
 
@@ -56,6 +58,8 @@ int main(){
     cout << "s- Save the Image to a file." << endl;
     cout << "0- Exit ." << endl;
     cin >> choice; // take the no. of the filter that user want to apply
+    
+    //leting the user choose the filter to apply
     if (choice == "1") {
         BlackWhiteFilter();
         saveGrayImage();
@@ -87,8 +91,7 @@ int main(){
         enlargeImage();
     }
     else if (choice == "9"){
-        cout << "hello";
-        saveGrayImage();
+        shrinkImage();
     }
     else if (choice == "a") {
         MirrorHalfImage();
@@ -98,7 +101,7 @@ int main(){
         shuffleImage();
     }
     else if (choice == "c"){
-        cout << "hello";
+        blurImage();
         saveGrayImage();
     }
     else if (choice == "0") {
@@ -520,6 +523,47 @@ void lightenAndDarkenImage(){
             for (int j = 0; j < SIZE; ++j) {
                 image[i][j] *= 0.5;
             }
+        }
+    }
+}
+//..................................................
+//Filter 9 : shrink image
+void shrinkImage(){
+    int shrinkSize;
+
+    //choosing the shrinkage size
+    cout << "please choose the shrinkage size:\n" << "1/(2)\n" << "1/(3)\n" << "1/(4)\n" << ">> ";
+    cin >> shrinkSize;
+
+    //skipping a shrink size number and loading it into a new loaded image "image2"
+    for (int i = 0, x = 0; i < SIZE; i += shrinkSize, ++x) {
+        for (int j = 0, y = 0; j < SIZE; j += shrinkSize, ++y) {
+            image2[x][y] = image[i][j];
+        }
+    }
+    //turning the rest of the pixels into white color
+    for (int i = (256 / shrinkSize), x = 0, w = (256 / shrinkSize); i < SIZE; ++i, x++, ++w) {
+        for (int j = (256 / shrinkSize), y = (256 / shrinkSize), z = 0; j < SIZE; ++j, y++, ++z) {
+            image2[i][j] = 255;
+            image2[x][y] = 255;
+            image2[w][z] = 255;
+        }
+    }
+    char  imageFileName[100];
+
+    cout << "enter the target image file name: ";
+    cin >> imageFileName;
+
+    strcat(imageFileName, ".bmp");
+    writeGSBMP(imageFileName, image2);
+}
+//..................................................
+//Filter c : blue image
+void blurImage(){
+    for (int i = 0; i < SIZE; ++i) {
+        for (int j = 0; j < SIZE; ++j) {
+            //taking the average of the surrounding pixels of each pixel
+            image[i][j] = (image[i][j]+image[i-1][j-1]+image[i-1][j]+image[i+1][j]+image[i][j-1]+image[i][j+1]+image[i-1][j+1]+image[i][j+1]+image[i+1][j+1]+image[i-2][j-2]+image[i-2][j]+image[i+2][j]+image[i][j-2]+image[i][j+2]+image[i-2][j+2]+image[i][j+2]+image[i+2][j+2]) /17 ;
         }
     }
 }
