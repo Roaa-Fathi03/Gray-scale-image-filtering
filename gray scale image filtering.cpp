@@ -1,12 +1,9 @@
 /* Title: gray scaled image filters
  * Purpose of the code: how to work on the image after load it into 2D array
  * how to loop on the row, and columns
- * Author 1: Farah Maged Mahmoud Soliman
- * ID 1: 20210286
- * Author 2: Shaimaa Hanafi Rashad Ali
- * ID 2: 20200887
- * Author 3: Roaa Fathi Abdelhameed Ahmed Nada.
- * ID 3: 20210140 */
+ * Author 1: Farahhmagedd03
+ * Author 2: Shaimaa 1111 
+ * Author 3: Roaa-Fathi03.*/
 
 #include <iostream>
 #include <cstring>
@@ -419,8 +416,11 @@ void enlargeImage() {
 void shrinkImage(){
     int shrinkSize;
 
-    //choosing the shrinkage size
-    cout << "please choose the shrinkage size:\n" << "1/(2)\n" << "1/(3)\n" << "1/(4)\n" << ">> ";
+    cout << " please choose the shrinkage size:\n";
+    cout << " choose 2 for 1/(2)\n";
+    cout << " choose 3 for 1/(3)\n";
+    cout << " choose 4 for 1/(4)\n" << endl;
+    cout << " >> "<< endl;
     cin >> shrinkSize;
 
     //skipping a shrink size number and loading it into a new loaded image "image2"
@@ -499,7 +499,7 @@ void MirrorHalfImage() {
 // Filter b: Shuffle Filter
 void shuffleImage() {
     for (int k = 1; k < 5; k++) {
-        cout << "Please, enter the " << k << " quarter order: " << endl; // Asking about the new quarters order for four times.
+        cout << "Please, enter the quarter number: " << k <<  endl; // Asking about the new quarters order for four times.
         cin >> quarterOrder;
 
         if (quarterOrder == 1 || quarterOrder == 2) { // If the chosen quarter is 1 or 2, then we set the old rows (original image) reference to 0.
@@ -586,4 +586,3 @@ void blurImage(){
         }
     }
 }
-
