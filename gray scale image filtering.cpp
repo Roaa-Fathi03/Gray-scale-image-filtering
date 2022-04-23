@@ -140,15 +140,17 @@ void BlackWhiteFilter() {
     }
 }
 //-----------------------------------------------
-void invertImage() {
+void invertImage() { // Looping through each single pixel in the original image, and replacing each white pixel to a black one, each black pixel to a white one, and each pixel with the one with the opposite level of brightness.
     for (int i = 0; i < SIZE; i++) {
         for (int j = 0; j < SIZE; j++) {
             if (image[i][j] == 0) {
                 image[i][j] = 255;
             }
+            
             else if (image [i][j] == 255) {
                 image[i][j] = 0;
             }
+            
             else {
                 image[i][j] = 255 - image[i][j];
             }
@@ -182,14 +184,14 @@ void FlipImage() {
 }
 //-----------------------------------------------
 void rotateImage() {
-    cout << "Please, enter a number to select the clockwise degrees of rotation: " << endl;
+    cout << "Please, enter a number to select the clockwise degrees of rotation: " << endl; // Asking the user about the number of clockwise degrees.
     cout << "1 - 90 degrees." << endl;
     cout << "2 - 180 degrees." << endl;
     cout << "3 - 270 degrees." << endl;
     cin >> choice5;
 
-    if (choice5 == 1) {
-        for (int i = 0; i < SIZE / 2; i++) {
+    if (choice5 == 1) { // If the choice was clockwise 90 degrees.
+        for (int i = 0; i < SIZE / 2; i++) { // Looping through each single pixel in half the original image, and swapping each vertical pixel to be a horizontal one, and vice versa.
             for (int j = i; j < SIZE - i - 1; j++) {
                 int temp = image[i][j];
                 image[i][j] = image[j][SIZE - 1 - i];
@@ -199,9 +201,10 @@ void rotateImage() {
             }
         }
     }
-    else if (choice5 == 2) {
-        for (int i = 0; i < SIZE; i++)
-            for (int j = 0, k = SIZE - 1; j < k; j++, k--)
+    
+    else if (choice5 == 2) { // If the choice was clockwise 180 degrees.
+        for (int i = 0; i < SIZE; i++) // We rotate the original image by 90 clockwise degrees twice, so we repeat the same process twice.
+            for (int j = 0, k = SIZE - 1; j < k; j++, k--) // Looping through each single pixel in half the original image, and swapping each vertical pixel to be a horizontal one, and vice versa.
                 swap(image[j][i], image[k][i]);
 
         for (int i = 0; i < SIZE; i++)
@@ -216,9 +219,10 @@ void rotateImage() {
             for (int j = i; j < SIZE; j++)
                 swap(image[i][j], image[j][i]);
     }
-    else {
-        for (int i = 0; i < SIZE / 2; i++) {
-            for (int j = i; j < SIZE - i - 1; j++) {
+    
+    else { // If the choice was clockwise 270 degrees.
+        for (int i = 0; i < SIZE / 2; i++) { // We rotate the original image by 90 clockwise degrees thrice, so we repeat the same process thrice.
+            for (int j = i; j < SIZE - i - 1; j++) { // Looping through each single pixel in half the original image, and swapping each vertical pixel to be a horizontal one, and vice versa.
                 int temp = image[i][j];
                 image[i][j] = image[j][SIZE - 1 - i];
                 image[j][SIZE - 1 - i] = image[SIZE - 1 - i][SIZE - 1 - j];
@@ -262,7 +266,7 @@ void DetectImageEdges() {
     }
 }
 //-----------------------------------------------
-void enlargeImage() {
+void enlargeImage() { // Asking the user to determine which quarter to enlarge.
     cout << "Please, enter a number to determine which quarter to enlarge: " << endl;
     cout << "1 - Right upper quarter." << endl;
     cout << "2 - Left upper quarter." << endl;
@@ -270,8 +274,8 @@ void enlargeImage() {
     cout << "4 - Left lower quarter." << endl;
     cin >> choice8;
 
-    if (choice8 == 1) {
-        for (int i = 0, x = 0; i < SIZE; i += 2, x++) {
+    if (choice8 == 1) { // If the chosen quarter is the first one.
+        for (int i = 0, x = 0; i < SIZE; i += 2, x++) { // Looping through each single pixel in the original image, and adding it to the first four pixels in the new one.
             for (int j = 0, y = 0; j < SIZE; j += 2, y++) {
                 quarter1[i][j] = image[x][y];
                 quarter1[i][j + 1] = image[x][y];
@@ -280,13 +284,14 @@ void enlargeImage() {
             }
         }
         char newImage[100];
-        cout << "Please, enter the target image file name: " << endl;
+        cout << "Please, enter the target image file name: " << endl; // Asking about the new image name.
         cin >> newImage;
-        strcat(newImage, ".bmp");
-        writeGSBMP(newImage, quarter1);
+        strcat(newImage, ".bmp"); // Adding .bmp extension to load and, write it.
+        writeGSBMP(newImage, quarter1); // Writing and creating the new image.
     }
-    else if (choice8 == 2) {
-        for (int i = 0, x = 0; i < SIZE; i += 2, x++) {
+    
+    else if (choice8 == 2) { // If the chosen quarter is the second one.
+        for (int i = 0, x = 0; i < SIZE; i += 2, x++) { // Looping through each single pixel in the original image, and adding it to the first four pixels in the new one.
             for (int j = 0, y = 128; j < SIZE; j += 2, y++) {
                 quarter2[i][j] = image[x][y];
                 quarter2[i][j + 1] = image[x][y];
@@ -295,14 +300,15 @@ void enlargeImage() {
             }
         }
         char newImage[100];
-        cout << "Please, enter the target image file name: " << endl;
+        cout << "Please, enter the target image file name: " << endl; // Asking about the new image name.
         cin >> newImage;
-        strcat(newImage, ".bmp");
-        writeGSBMP(newImage, quarter2);
+        strcat(newImage, ".bmp"); // Adding .bmp extension to load and, write it.
+        writeGSBMP(newImage, quarter2); // Writing and creating the new image.
 
     }
-    else if (choice8 == 3) {
-        for (int i = 0, x = 128; i < SIZE; i += 2, x++) {
+    
+    else if (choice8 == 3) { // If the chosen quarter is the third one.
+        for (int i = 0, x = 128; i < SIZE; i += 2, x++) { // Looping through each single pixel in the original image, and adding it to the first four pixels in the new one.
             for (int j = 0, y = 0; j < SIZE; j += 2, y++) {
                 quarter3[i][j] = image[x][y];
                 quarter3[i][j + 1] = image[x][y];
@@ -311,14 +317,15 @@ void enlargeImage() {
             }
         }
         char newImage[100];
-        cout << "Please, enter the target image file name: " << endl;
+        cout << "Please, enter the target image file name: " << endl; // Asking about the new image name.
         cin >> newImage;
-        strcat(newImage, ".bmp");
-        writeGSBMP(newImage, quarter3);
+        strcat(newImage, ".bmp"); // Adding .bmp extension to load and, write it.
+        writeGSBMP(newImage, quarter3); // Writing and creating the new image.
 
     }
-    else {
-        for (int i = 0, x = 128; i < SIZE; i += 2, x++) {
+    
+    else { // If the chosen quarter is the fourth one.
+        for (int i = 0, x = 128; i < SIZE; i += 2, x++) { // Looping through each single pixel in the original image, and adding it to the first four pixels in the new one.
             for (int j = 0, y = 128; j < SIZE; j += 2, y++) {
                 quarter4[i][j] = image[x][y];
                 quarter4[i][j + 1] = image[x][y];
@@ -327,10 +334,10 @@ void enlargeImage() {
             }
         }
         char newImage[100];
-        cout << "Please, enter the target image file name: " << endl;
+        cout << "Please, enter the target image file name: " << endl; // Asking about the new image name.
         cin >> newImage;
-        strcat(newImage, ".bmp");
-        writeGSBMP(newImage, quarter4);
+        strcat(newImage, ".bmp"); // Adding .bmp extension to load and, write it.
+        writeGSBMP(newImage, quarter4); // Writing and creating the new image.
     }
 }
 //-----------------------------------------------
@@ -385,61 +392,64 @@ void MirrorHalfImage() {
 //-----------------------------------------------
 void shuffleImage() {
     for (int k = 1; k < 5; k++) {
-        cout << "Please, enter the " << k << " quarter order: " << endl;
+        cout << "Please, enter the " << k << " quarter order: " << endl; // Asking about the new quarters order for four times.
         cin >> quarterOrder;
 
-        if (quarterOrder == 1 || quarterOrder == 2) {
+        if (quarterOrder == 1 || quarterOrder == 2) { // If the chosen quarter is 1 or 2, then we set the old rows (original image) reference to 0.
             oldRows = 0;
-        } else {
+        } else { // Otherwise, it is set to 128.
             oldRows = 128;
         }
 
-        if (quarterOrder == 1 || quarterOrder == 3) {
+        if (quarterOrder == 1 || quarterOrder == 3) { // If the chosen quarter is 1 or 3, then we set the old columns (original image) reference to 0.
             oldCols = 0;
-        } else {
+        } else { // Otherwise, it is set to 128.
             oldCols = 128;
         }
 
-        if (k == 1 || k == 2) {
+        if (k == 1 || k == 2) { // If the chosen quarter is 1 or 2, then we set the new rows (shuffled image) reference to 0.
             newRows = 0;
-        } else {
+        } else { // Otherwise, it is set to 128.
             newRows = 128;
         }
 
-        if (k == 1 || k == 3) {
+        if (k == 1 || k == 3) { // If the chosen quarter is 1 or 2, then we set the new columns (shuffled image) reference to 0.
             newCols = 0;
-        } else {
+        } else { // Otherwise, it is set to 128.
             newCols = 128;
         }
 
-        if (quarterOrder == 1) {
-            x = newRows;
+        if (quarterOrder == 1) { // If the chosen quarter is 1.
+            x = newRows; // We set the counter x to the value of the new rows refernce, and adding each single pixel in the original image to the shuffled one.
             for (int i = 0; i < 128; i++, x++) {
-                y = newCols;
+                y = newCols; // Counter y is set the value of the new columns refernce.
                 for (int j = 0; j < 128; j++, y++) {
                     shuffledImage[x][y] = image[i][j];
                 }
             }
-        } else if (quarterOrder == 2) {
-            x = newRows;
+            
+        } else if (quarterOrder == 2) { // If the chosen quarter is 2.
+            x = newRows; // We set the counter x to the value of the new rows refernce, and adding each single pixel in the original image to the shuffled one.
             for (int i = 0; i < 128; i++, x++) {
-                y = newCols;
+                y = newCols; // Counter y is set the value of the new columns refernce.
                 for (int j = 128; j < 256; j++, y++) {
                     shuffledImage[x][y] = image[i][j];
                 }
             }
-        } else if (quarterOrder == 3) {
-            x = newRows;
+            
+        } else if (quarterOrder == 3) { // If the chosen quarter is 3.
+            x = newRows; // We set the counter x to the value of the new rows refernce, and adding each single pixel in the original image to the shuffled one.
             for (int i = 128; i < 256; i++, x++) {
-                y = newCols;
+                y = newCols; // Counter y is set the value of the new columns refernce.
                 for (int j = 0; j < 128; j++, y++) {
                     shuffledImage[x][y] = image[i][j];
                 }
             }
-        } else {
-            x = newRows;
+            
+        } else { // If the chosen quarter is 4.
+            x = newRows; // We set the counter x to the value of the new rows refernce, and adding each single pixel in the original image to the shuffled one.
             for (int i = 128; i < 256; i++, x++) {
-                y = newCols;
+                y = newCols; // Counter y is set the value of the new columns refernce.
                 for (int j = 128; j < 256; j++, y++) {
                     shuffledImage[x][y] = image[i][j];
                 }
@@ -447,14 +457,10 @@ void shuffleImage() {
         }
     }
     char newImage[100];
-
-    // Get gray scale target image file name.
-    cout << "Please, enter the target image file name: " << endl;
+    cout << "Please, enter the target image file name: " << endl; // Asking about the new image name.
     cin >> newImage;
-
-    // Add to the file name .bmp extension to load the image.
-    strcat(newImage, ".bmp");
-    writeGSBMP(newImage, shuffledImage);
+    strcat(newImage, ".bmp"); // Adding .bmp extension to load, and write it.
+    writeGSBMP(newImage, shuffledImage); // Writing and creating the new image.
 }
 //-----------------------------------------------
 
